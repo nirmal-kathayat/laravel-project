@@ -3,24 +3,34 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use thiagoalessio\TesseractOCR\TesseractOCR;
+use Alimranahmed\LaraOCR\Facades\OCR;
 
 class ImageExtractController extends Controller
 {
+
     public function extractImage()
     {
-       
-        // scanned image
-        $imagePath = public_path('photo.jpg');
+        return view('extractImage.form');
+    }
 
-        $tesseract = new TesseractOCR($imagePath);
+    public function storeExtractImage(Request $request)
+    {
+        // dd($request->all());
+        $request->validate([
+            'passport-image' => 'required'
+        ]);
 
-        // set the language
-        $tesseract->lang('eng');
-
-        // Get the text form image
-        $text = $tesseract->run();
-
-        dd($text);
+        $imagePath = public_path('scan2.png',);
+        $ocrText = OCR::scan($imagePath);
+        dd($ocrText);
+        $pattern = '/PBNPL[^<]*<<.*?(?=PBNPL|\z)/s';
+        if (preg_match($pattern, $ocrText, $matches)) {
+            $desiredPart = $matches[0];
+            $desiredPart = trim($desiredPart);
+            dd($desiredPart);
+        } else {
+            dd("Not found any desired part in  OCR text.");
+        }
+        dd($ocrText);
     }
 }

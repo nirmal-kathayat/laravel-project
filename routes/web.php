@@ -12,9 +12,13 @@ Route::put('inventory/edit/{id}',[App\Http\Controllers\InventoryController::clas
 Route::delete('inventory/delete/{id}',[App\Http\Controllers\InventoryController::class,'delete'])->name('inventory.delete');
 
 
-// image extract
-Route::get('image',[App\Http\Controllers\ImageExtractController::class,'extractImage']);
-
 // PDF extract
-
 Route::get('pdf',[App\Http\Controllers\PDFExtractController::class,'extractPDF']);
+
+
+// image extract
+
+Route::get('image',[App\Http\Controllers\ImageExtractController::class,'extractImage'])->name('image');
+
+Route::post('imageExtract',[App\Http\Controllers\ImageExtractController::class,'storeExtractImage'])->name('imageExtract');
+
